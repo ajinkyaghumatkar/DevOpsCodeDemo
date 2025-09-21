@@ -16,42 +16,28 @@ pipeline{
     }
 
     stages{
+			stage('Build on Dev'){
+			
+				steps{
+				
+				script{
+					def mvnCMD = [
+						Dev : 'compile',
+						QA : 'test'
+					
+					]
+					
+				def CMD =mvnCMD[params.ENV]
+				git 'https://github.com/ajinkyaghumatkar/DevOpsCodeDemo.git'
+				sh "mvn ${CMD}"
+				
+				
+				}
 
+				}
 
-            stage('Build on Dev'){
-
-                when{
-
-                    expression{
-
-                        params.ENV == "Dev"
-                    }
-                }
-                steps{
-
-                    git 'https://github.com/ajinkyaghumatkar/DevOpsCodeDemo.git'
-                    sh 'mvn pmd:pmd'
-                    sh 'mvn compile'
-                    echo "Build completed AJinkya !"
-                }
-
-            stage('Build on Test'){
-
-                when{
-
-                    expression{
-
-                        params.ENV == "QA"
-                    }
-                }
-                steps{
-
-                    git 'https://github.com/ajinkyaghumatkar/DevOpsCodeDemo.git'
-                    sh 'mvn test'
-                    echo "Testing completed Ajinkya!"
-                }
-
-            }
     }
+			
 }
+
 }
